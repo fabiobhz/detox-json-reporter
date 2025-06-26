@@ -1,17 +1,45 @@
 {
   "name": "detox-json-reporter",
   "version": "1.0.0",
-  "description": "Custom Jest reporter for Detox to generate JSON reports for Grafana",
-  "main": "index.js",
-  "keywords": ["detox", "jest", "reporter", "grafana", "json"],
-  "author": "Your Name",
+  "description": "Custom Jest reporter for Detox to generate JSON reports compatible with Grafana dashboards",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "tsc",
+    "prepublishOnly": "tsc && echo \"No tests yet\"",
+    "test": "echo \"No tests yet\""
+  },
+  "keywords": [
+    "detox",
+    "jest",
+    "reporter",
+    "grafana",
+    "json",
+    "typescript",
+    "e2e"
+  ],
+  "author": "Fábio Gomes",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fabiobhz/detox-json-report.git"
+    "url": "git+https://github.com/fabiobhz/detox-json-reporter.git"
   },
   "bugs": {
-    "url": "https://github.com/fabiobhz/detox-json-report/issues"
+    "url": "https://github.com/fabiobhz/detox-json-reporter/issues"
   },
-  "homepage": "https://github.com/fabiobhz/detox-json-report#readme"
+  "homepage": "https://github.com/fabiobhz/detox-json-reporter#readme",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=14"
+  },
+  "devDependencies": {
+    "@jest/reporters": "^30.0.2",
+    "@types/node": "^24.0.4",
+    "jest-resolve": "^30.0.2",
+    "typescript": "^5.0.0"
+  }
 }
