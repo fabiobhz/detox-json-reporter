@@ -1,0 +1,17 @@
+{
+  "name": "detox-json-reporter",
+  "version": "1.0.0",
+  "description": "Custom Jest reporter for Detox to generate JSON reports for Grafana",
+  "main": "index.js",
+  "keywords": ["detox", "jest", "reporter", "grafana", "json"],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fabiobhz/detox-json-report.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fabiobhz/detox-json-report/issues"
+  },
+  "homepage": "https://github.com/fabiobhz/detox-json-report#readme"
+}
