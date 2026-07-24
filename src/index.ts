@@ -28,6 +28,23 @@ interface DetoxJsonReportEntry {
   };
 }
 
+interface DetoxJsonReportSummary {
+  numTotalTestSuites: number;
+  numPassedTestSuites: number;
+  numFailedTestSuites: number;
+  numPendingTestSuites: number;
+  numTotalTests: number;
+  numPassedTests: number;
+  numFailedTests: number;
+  numPendingTests: number;
+  duration: number;
+}
+
+interface DetoxJsonReport {
+  summary: DetoxJsonReportSummary;
+  results: DetoxJsonReportEntry[];
+}
+
 class DetoxJsonReporter implements Reporter {
   private _results: DetoxJsonReportEntry[] = [];
   private _options: { [key: string]: any };
@@ -71,7 +88,7 @@ class DetoxJsonReporter implements Reporter {
     });
   }
 
-  onRunComplete(): void {
+  onRunComplete(_contexts: unknown, results?: AggregatedResult): void {
     const outputDir = this._options.outputDir ?? 'reports';
     const filename = this._options.filename ?? 'detox-results.json';
 
@@ -82,8 +99,62 @@ class DetoxJsonReporter implements Reporter {
       fs.mkdirSync(reportPath, { recursive: true });
     }
 
-    fs.writeFileSync(reportFile, JSON.stringify(this._results, null, 2));
+    const report: DetoxJsonReport = {
+      summary: this.buildSummary(results),
+      results: this._results,
+    };
+
+    fs.writeFileSync(reportFile, JSON.stringify(report, null, 2));
     console.log(`📄 Detox JSON report saved to ${reportFile}`);
+  }
+
+  private buildSummary(results?: AggregatedResult): DetoxJsonReportSummary {
+    if (results) {
+      return {
+        numTotalTestSuites: results.numTotalTestSuites,
+        numPassedTestSuites: results.numPassedTestSuites,
+        numFailedTestSuites: results.numFailedTestSuites,
+        numPendingTestSuites: results.numPendingTestSuites,
+        numTotalTests: results.numTotalTests,
+        numPassedTests: results.numPassedTests,
+        numFailedTests: results.numFailedTests,
+        numPendingTests: results.numPendingTests,
+        duration: results.startTime ? Date.now() - results.startTime : 0,
+      };
+    }
+    return this.buildSummaryFromResults();
+  }
+
+  private buildSummaryFromResults(): DetoxJsonReportSummary {
+    const files = new Set<string>();
+    const failedFiles = new Set<string>();
+    let numPassedTests = 0;
+    let numFailedTests = 0;
+    let numPendingTests = 0;
+
+    this._results.forEach((entry) => {
+      files.add(entry.file);
+      if (entry.status === 'failed') {
+        numFailedTests += 1;
+        failedFiles.add(entry.file);
+      } else if (entry.status === 'pending' || entry.status === 'skipped') {
+        numPendingTests += 1;
+      } else if (entry.status === 'passed') {
+        numPassedTests += 1;
+      }
+    });
+
+    return {
+      numTotalTestSuites: files.size,
+      numPassedTestSuites: files.size - failedFiles.size,
+      numFailedTestSuites: failedFiles.size,
+      numPendingTestSuites: 0,
+      numTotalTests: this._results.length,
+      numPassedTests,
+      numFailedTests,
+      numPendingTests,
+      duration: 0,
+    };
   }
 }
 

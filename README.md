@@ -70,28 +70,48 @@ This will instruct Detox to use the reporter automatically.
 
 ## 📄 Output Format Example
 
+Each report is an object with a `summary` (the Jest run totals) and a `results`
+array (one entry per test case):
+
 ```json
-[
-  {
-    "testName": "Login flow should succeed",
-    "status": "passed",
-    "duration": 1325,
-    "file": "e2e/Login.test.ts",
-    "startedAt": "2025-06-26T10:25:00.123Z",
-    "endedAt": "2025-06-26T10:25:01.448Z",
-    "failureMessages": [],
-    "retries": 1,
-    "flaky": false,
-    "environment": {
-      "platform": "ios",
-      "hostPlatform": "darwin",
-      "hostname": "MacBook-Pro.local",
-      "osVersion": "24.1.0",
-      "cpuArch": "arm64"
+{
+  "summary": {
+    "numTotalTestSuites": 1,
+    "numPassedTestSuites": 1,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 1,
+    "numPassedTests": 1,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "duration": 1325
+  },
+  "results": [
+    {
+      "testName": "Login flow should succeed",
+      "status": "passed",
+      "duration": 1325,
+      "file": "e2e/Login.test.ts",
+      "startedAt": "2025-06-26T10:25:00.123Z",
+      "endedAt": "2025-06-26T10:25:01.448Z",
+      "failureMessages": [],
+      "retries": 1,
+      "flaky": false,
+      "environment": {
+        "platform": "ios",
+        "hostPlatform": "darwin",
+        "hostname": "MacBook-Pro.local",
+        "osVersion": "24.1.0",
+        "cpuArch": "arm64"
+      }
     }
-  }
-]
+  ]
+}
 ```
+
+> **Breaking change in 1.2.0:** the report is now a `{ summary, results }` object.
+> Prior versions emitted the top-level `results` array only. Consumers that read
+> the array directly should now read the `results` property.
 
 ---
 
