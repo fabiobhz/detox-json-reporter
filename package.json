@@ -1,14 +1,14 @@
 {
   "name": "detox-json-reporter",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Custom Jest reporter for Detox to generate JSON reports compatible with Grafana dashboards",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "prepare": "tsc",
-    "prepublishOnly": "tsc && echo \"No tests yet\"",
-    "test": "echo \"No tests yet\""
+    "prepublishOnly": "tsc && node --test",
+    "test": "tsc && node --test"
   },
   "keywords": [
     "detox",

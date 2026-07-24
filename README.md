@@ -41,7 +41,8 @@ module.exports = {
   reporters: [
     'default',
     ['detox-json-reporter', {
-      outputFile: './reports/detox-results.json' // optional path
+      outputDir: './reports', // optional, defaults to "reports"
+      filename: 'detox-results.json' // optional, defaults to "detox-results.json"
     }]
   ]
 };

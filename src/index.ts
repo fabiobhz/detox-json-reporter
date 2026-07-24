@@ -72,8 +72,11 @@ class DetoxJsonReporter implements Reporter {
   }
 
   onRunComplete(): void {
-    const reportPath = path.resolve(process.cwd(), 'reports');
-    const reportFile = path.join(reportPath, 'detox-results.json');
+    const outputDir = this._options.outputDir ?? 'reports';
+    const filename = this._options.filename ?? 'detox-results.json';
+
+    const reportPath = path.resolve(process.cwd(), outputDir);
+    const reportFile = path.join(reportPath, filename);
 
     if (!fs.existsSync(reportPath)) {
       fs.mkdirSync(reportPath, { recursive: true });
